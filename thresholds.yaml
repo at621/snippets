@@ -1,0 +1,48 @@
+JEFFREYS_TEST:
+  HIGH_DEFAULT_PORTFOLIO:
+    rules:
+      - name: "something1"
+        value: .1
+        operator: 'less_or_equal'
+        color: "RED"
+      - name: "something2"
+        value: .2
+        operator: 'less_or_equal'
+        color: "AMBER"
+      - name: "something3"
+        value: .2
+        operator: 'higher'
+        color: "GREEN"
+  LOW_DEFAULT_PORTFOLIO:
+    rules:
+      - name: "something1"
+        value: .1
+        operator: 'less_or_equal'
+        color: "RED"
+      - name: "something2"
+        value: .2
+        operator: 'less_or_equal'
+        color: "AMBER"
+      - name: "something3"
+        value: .2
+        operator: 'higher'
+        color: "GREEN"
+      - name: "something14"
+        value: .7
+        operator: 'higher'
+        color: "RED"          
+EXAMPLE_TEST:
+  HIGH_DEFAULT_PORTFOLIO:
+    rules:
+      - name: "something1"
+        value: .1
+        operator: 'less_or_equal'
+        color: "RED"
+      - name: "something2"
+        value: .2
+        operator: 'less_or_equal'
+        color: "AMBER"
+      - name: "something3"
+        value: .2
+        operator: 'higher'
+        color: "GREEN"  
