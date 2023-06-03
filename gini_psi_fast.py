@@ -32,3 +32,21 @@ auc_scores = calculate_auc(df, 'target')
 auc_df = pd.DataFrame(list(auc_scores.items()), columns=['variable', 'AUC'])
 
 auc_df
+
+
+# Create a crosstab
+index = pd.date_range('2000', '2010', freq='A')
+data = np.random.rand(10, 5)
+df = pd.DataFrame(data, index=index.year, columns=['A', 'B', 'C', 'D', 'E'])
+df = df.div(df.sum(axis=1), axis=0)  # Normalize the rows to get the distributions
+
+# Calculate PSI for adjacent periods
+psi_values = []
+for i in range(len(df)-1):
+    actual = df.iloc[i]
+    expected = df.iloc[i+1]
+    psi = np.sum((actual - expected) * np.log(actual / expected))
+    psi_values.append(psi)
+
+# Create a DataFrame with PSI values
+psi_df = pd.DataFrame(psi_values, index=df.index[1:], columns=['PSI'])
