@@ -45,7 +45,8 @@ psi_values = []
 for i in range(len(df)-1):
     actual = df.iloc[i]
     expected = df.iloc[i+1]
-    psi = np.sum((actual - expected) * np.log(actual / expected))
+    eps = 1e-6  # or another small constant of your choice
+    psi = np.sum((actual + eps - (expected + eps)) * np.log((actual + eps) / (expected + eps)))
     psi_values.append(psi)
 
 # Create a DataFrame with PSI values
