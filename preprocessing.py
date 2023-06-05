@@ -113,6 +113,26 @@ mode_df.index = ['mode']
 # Combining mode DataFrame with the combined DataFrame
 combined_df = pd.concat([combined_df, mode_df])
 
+# Define the special values
+special_values = [9, 99, 999, 9999, 99999, '9', '99', '999', '9999', '99999']
+
+# Initialize a dictionary to hold the results
+special_counts = {val: [] for val in special_values}
+
+# Count the occurrences of each special value in each column
+for val in special_values:
+    for col in df.columns:
+        try:
+            special_counts[val].append(df[col].value_counts()[val])
+        except KeyError:
+            special_counts[val].append(0)
+
+# Convert the counts to a DataFrame
+special_counts_df = pd.DataFrame(special_counts, index=df.columns).transpose()
+
+# Add to the combined DataFrame
+combined_df = pd.concat([combined_df, special_counts_df])
+
 def calculate_gini(df, target):
     result = {}
     for col in df.columns:
