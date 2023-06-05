@@ -106,6 +106,12 @@ types_df = pd.DataFrame(auc_df.dtypes, columns=['dtypes']).transpose()
 
 combined_df = pd.concat([combined_df, types_df])
 
+# Getting the first mode of each column
+mode_df = df.mode().iloc[0].to_frame().transpose()
+mode_df.index = ['mode']
+
+# Combining mode DataFrame with the combined DataFrame
+combined_df = pd.concat([combined_df, mode_df])
 
 def calculate_gini(df, target):
     result = {}
