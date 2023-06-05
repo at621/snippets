@@ -81,4 +81,57 @@ date_cols = [...]  # replace this with the list of date columns names
 for col in date_cols:
     df[col] = pd.to_datetime(df[col], errors='coerce')
   
-  
+
+
+
+
+import pandas as pd
+from sklearn.metrics import roc_auc_score
+
+auc_df = df.copy()
+
+
+# Using .describe() to get statistical details
+desc_df = auc_df.describe(include='all')
+
+# Counting unique values in each column
+unique_df = pd.DataFrame(auc_df.nunique()).transpose()
+unique_df.index = ['unique']
+
+# Combining the two DataFrames
+combined_df = pd.concat([desc_df, unique_df])
+
+# To show column types as well
+types_df = pd.DataFrame(auc_df.dtypes, columns=['dtypes']).transpose()
+
+combined_df = pd.concat([combined_df, types_df])
+
+
+def calculate_gini(df, target):
+    result = {}
+    for col in df.columns:
+        if col != target:
+            if df[col].nunique() < 2:
+                continue
+            df_no_na = df[[col, target]].dropna()
+
+            if df[col].dtype.name in ['object', 'category']:
+                event_rate = df_no_na.groupby(col)[target].mean()
+                temp_col = df_no_na[col].map(event_rate)
+            else:  # For numerical features
+                temp_col = df_no_na[col]
+            auc = roc_auc_score(df_no_na[target], temp_col)
+            result[col] = abs(2*auc - 1)  # Calculate Gini from AUC
+    return result
+
+# Calculate Gini
+gini_scores = calculate_gini(auc_df, 'target')
+
+
+# Convert Gini scores to DataFrame
+gini_df = pd.DataFrame(gini_scores, index=['gini'])
+
+# Combine Gini DataFrame with the combined DataFrame
+combined_df = pd.concat([combined_df, gini_df])
+
+combined_df
