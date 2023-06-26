@@ -61,3 +61,36 @@ for column, function in operations.items():
 
 print(df)
 
+
+# suppose we have the following DataFrame
+df = pd.DataFrame({
+    'a': [1, 2, 3],
+    'b': [4, 5, 6],
+    'c': ['one', 'two', 'three'],
+    'target': [7, 8, 9]
+})
+
+# target variable
+target = df['target']
+
+# define some custom functions
+def square_and_multiply(x, target):
+    return (x ** 2) * np.mean(target), '_squared_times_mean_target'
+
+def string_length_and_target_sum(x, target):
+    return x.str.len() + np.sum(target), '_length_plus_sum_target'  # this function works on a pandas Series of strings
+
+# define a dictionary that maps dtype names to functions
+operations = {
+    'number': square_and_multiply,
+    'object': string_length_and_target_sum
+}
+
+# apply each function to the appropriate column
+for dtype, function in operations.items():
+    for col in df.select_dtypes(include=dtype).columns:
+        if col != 'target':  # skip the target column
+            new_data, suffix = function(df[col], target)
+            df[col + suffix] = new_data
+
+print(df)
