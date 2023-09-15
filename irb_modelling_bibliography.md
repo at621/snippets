@@ -1,4 +1,4 @@
-| # | Name | Title | Pages | Author |
+| # | Title | Year | Pages | Author |
 |---|------|------|-------|-----------|
 | 1 | [Guidelines on the Application of the Definition of Default](https://www.eba.europa.eu/sites/default/documents/files/documents/10180/1597103/004d3356-a9dc-49d1-aab1-3591f4d42cbb/Final%20Report%20on%20Guidelines%20on%20default%20definition%20%28EBA-GL-2016-07%29.pdf?retry=1) | 2016 | 107 | EBA |
 | 2 | [RTS on Assigning Risk Weights to Specialised Lending Exposures](https://www.eba.europa.eu/sites/default/documents/files/documents/10180/1489608/e915f563-acba-485d-a05a-0756ce8360dd/EBA-2016-RTS-02%20%28Final%20RTS%20on%20specialised%20lending%20exposures%29.pdf?retry=1) | 2016 | 74 | EBA |
