@@ -37,6 +37,22 @@ df_predict = df_predict[(df_predict['var_1'] >= 0) &
 
 df_predict.head()
 
+# Convert continuous estimates in the range [0, 1] to 10 equal-width buckets for both datasets
+
+# For the first dataset with 'Predicted_LGD' and 'Realised_LGD'
+df['Predicted_LGD_Bucket'] = pd.cut(df['Predicted_LGD'], bins=np.linspace(0, 1, 11), labels=False, include_lowest=True)
+df['Realised_LGD_Bucket'] = pd.cut(df['Realised_LGD'], bins=np.linspace(0, 1, 11), labels=False, include_lowest=True)
+
+# For the second dataset with 'Predicted_LGD'
+df_predict['Predicted_LGD_Bucket'] = pd.cut(df_predict['Predicted_LGD'], bins=np.linspace(0, 1, 11), labels=False, include_lowest=True)
+
+# Show some sample rows from both datasets
+df_sample = df.sample(5)
+df_predict_sample = df_predict.sample(5)
+
+df_sample, df_predict_sample
+
+
 
 # Define the number of observations and years
 num_obs = 1000
