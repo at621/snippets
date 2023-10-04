@@ -1,0 +1,88 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create another synthetic dataset for predicting LGDs
+# Generate some variables (var_1, var_2, var_3) that are positively correlated with Predicted LGD
+
+# Initialize random seed for reproducibility
+np.random.seed(42)
+
+# Generate Predicted LGD as a bimodal distribution similar to the previous example
+pred_lgd_new_part1 = np.random.normal(mean1, std1, int(num_obs / 2))
+pred_lgd_new_part2 = np.random.normal(mean2, std2, int(num_obs / 2))
+pred_lgd_new = np.concatenate([pred_lgd_new_part1, pred_lgd_new_part2])
+
+# Generate variables (var_1, var_2, var_3) that are positively correlated with Predicted LGD
+# You can tune the correlation strength by adjusting the noise_level
+noise_level_var = 0.1
+var_1 = pred_lgd_new + np.random.normal(0, noise_level_var, num_obs)
+var_2 = pred_lgd_new + np.random.normal(0, noise_level_var, num_obs)
+var_3 = pred_lgd_new + np.random.normal(0, noise_level_var, num_obs)
+
+# Combine into a DataFrame
+df_predict = pd.DataFrame({
+    'Year': np.random.choice(years, num_obs),
+    'var_1': var_1,
+    'var_2': var_2,
+    'var_3': var_3,
+    'Predicted_LGD': pred_lgd_new
+})
+
+# Filter to ensure all values are greater than or equal to 0
+df_predict = df_predict[(df_predict['var_1'] >= 0) & 
+                        (df_predict['var_2'] >= 0) & 
+                        (df_predict['var_3'] >= 0) & 
+                        (df_predict['Predicted_LGD'] >= 0)]
+
+df_predict.head()
+
+
+# Define the number of observations and years
+num_obs = 1000
+years = np.arange(2000, 2000 + int(num_obs / 10))
+
+# Parameters for the bimodal distribution peaks
+mean1, std1 = 0.2, 0.05  # First peak parameters
+mean2, std2 = 0.8, 0.1  # Second peak parameters
+
+# Generate the bimodal distribution for Predicted LGD
+pred_lgd_part1 = np.random.normal(mean1, std1, int(num_obs / 2))
+pred_lgd_part2 = np.random.normal(mean2, std2, int(num_obs / 2))
+pred_lgd = np.concatenate([pred_lgd_part1, pred_lgd_part2])
+
+# Add some noise and correlation to generate Realised LGD
+# You can tune the correlation strength by adjusting the noise_level
+noise_level = 0.05
+real_lgd = pred_lgd + np.random.normal(0, noise_level, num_obs)
+
+# Combine into a DataFrame
+df = pd.DataFrame({
+    'Year': np.random.choice(years, num_obs),
+    'Predicted_LGD': pred_lgd,
+    'Realised_LGD': real_lgd
+})
+
+# Plotting to visualize the distributions and their correlation
+fig, axs = plt.subplots(1, 3, figsize=(18, 6))
+
+# Histogram for Predicted LGD
+axs[0].hist(df['Predicted_LGD'], bins=30, alpha=0.7, color='blue', label='Predicted LGD')
+axs[0].set_title('Predicted LGD Distribution')
+axs[0].set_xlabel('Predicted LGD')
+axs[0].set_ylabel('Frequency')
+
+# Histogram for Realised LGD
+axs[1].hist(df['Realised_LGD'], bins=30, alpha=0.7, color='green', label='Realised LGD')
+axs[1].set_title('Realised LGD Distribution')
+axs[1].set_xlabel('Realised LGD')
+axs[1].set_ylabel('Frequency')
+
+# Scatter plot for correlation
+axs[2].scatter(df['Predicted_LGD'], df['Realised_LGD'], alpha=0.5, color='red')
+axs[2].set_title('Correlation between Predicted and Realised LGD')
+axs[2].set_xlabel('Predicted LGD')
+axs[2].set_ylabel('Realised LGD')
+
+plt.tight_layout()
+plt.show()
