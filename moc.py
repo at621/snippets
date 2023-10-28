@@ -11,7 +11,7 @@ def calculate_moc_c(df: pd.DataFrame, column_name: str) -> float:
 
     Returns:
     float: The calculated MoC C value.
-    float: The calculated Average Standard Deviation, which is set to be the Standard Deviation of the Mean.
+    float: The calculated Average Standard Deviation.
 
     Example:
     >>> df = pd.DataFrame({'Year': [2010, 2011, 2012, 2013, 2014, 2015],
@@ -31,10 +31,7 @@ def calculate_moc_c(df: pd.DataFrame, column_name: str) -> float:
     # Calculate MoC C
     moc_c = std_dev_mean / avg_default_rate
 
-    # Set Standard Deviation from step 1 as Average Standard Deviation (as per requirements)
-    avg_std_dev = std_dev_mean
-
-    return moc_c, avg_std_dev
+    return moc_c, std_dev_mean
 
 # Example usage
 df = pd.DataFrame({
