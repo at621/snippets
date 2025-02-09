@@ -666,3 +666,103 @@ All of these should be *somewhat close* to \((0.02,\,0.15)\) if the simulation i
    - The “best” approach depends on your portfolio size, internal modeling frameworks, IFRS9 requirements, etc. The binomial MLE is quite standard if you want to properly account for discrete default counts. The continuous fraction PDF is a good approximation for large portfolios. The indirect moment approach is extremely common in practice for a quick correlation estimate.  
 
 All three yield *portfolio‐level PD and correlation estimates* from *just a time series of default rates*, no transition matrices needed.
+
+================
+
+Below is a minimal Python helper function that returns the *point‐in‐time* Probability of Default (\(\text{PD}\)) given:
+
+- A *Z‐score* for the systematic (market) factor,  
+- The asset correlation \(\rho\),  
+- And either the “threshold” \(k\) **or** the *unconditional* (long‐run) PD \(p\).
+
+---
+
+## 1) If You Have the Threshold \(k\)
+
+In many Vasicek formulations, we say
+\[
+\text{PD}(Z) \;=\; \Phi\!\Bigl(\frac{k - \sqrt{\rho}\,Z}{\sqrt{1 - \rho}} \Bigr),
+\]
+where
+- \(Z\) is the realized (or scenario) value of the systematic factor,  
+- \(k\) is the threshold (i.e.\ the inverse‐CDF of the unconditional PD under the “through‐the‐cycle” assumption).  
+
+A Python function implementing this:
+
+```python
+import numpy as np
+from scipy.stats import norm
+
+def pd_given_z_k(z_value, rho, k):
+    """
+    Returns the point-in-time PD given a systematic factor Z,
+    correlation rho, and threshold k in a one-factor Vasicek model.
+    
+    PD(Z) = Phi( (k - sqrt(rho)*Z) / sqrt(1-rho) ).
+    """
+    alpha = (k - np.sqrt(rho)*z_value) / np.sqrt(1 - rho)
+    return norm.cdf(alpha)
+
+# Example usage:
+z_example = 1.0       # Suppose the systematic factor is +1.0
+rho_example = 0.20
+k_example = norm.ppf(0.02)   # e.g. threshold for unconditional PD=2%
+
+pd_result = pd_given_z_k(z_example, rho_example, k_example)
+print(f"PD for Z={z_example:.2f}, rho={rho_example:.2f}: {pd_result:.4%}")
+```
+
+---
+
+## 2) If You Have the *Unconditional* PD \(p\)
+
+Often, one does *not* explicitly store \(k\) but instead knows the *long‐run* PD, say \(p\).  The relationship is
+\[
+k \;=\; \Phi^{-1}(p),
+\]
+so the PiT PD given \(Z\) is
+\[
+\text{PD}(Z) 
+\;=\; 
+\Phi\!\Bigl(
+  \frac{\Phi^{-1}(p) \;-\;\sqrt{\rho}\,Z}
+       {\sqrt{\,1 - \rho\,}}
+\Bigr).
+\]
+
+A Python function:
+
+```python
+import numpy as np
+from scipy.stats import norm
+
+def pd_given_z_p(z_value, rho, p):
+    """
+    Returns the point-in-time PD given:
+      - z_value: the realized systematic factor Z,
+      - rho: asset correlation,
+      - p: long-run (unconditional) PD.
+    
+    PD(Z) = Phi( [Phi^{-1}(p) - sqrt(rho)*Z] / sqrt(1 - rho) ).
+    """
+    k = norm.ppf(p)  # threshold implied by p
+    alpha = (k - np.sqrt(rho)*z_value) / np.sqrt(1 - rho)
+    return norm.cdf(alpha)
+
+# Example usage:
+z_example = -0.5
+rho_example = 0.15
+p_example = 0.02   # 2% unconditional PD
+
+pd_result = pd_given_z_p(z_example, rho_example, p_example)
+print(f"PD for Z={z_example:.2f}, rho={rho_example:.2f}, p={p_example:.2%}: {pd_result:.4%}")
+```
+
+---
+
+### Interpreting the Output
+
+- When \(Z\) is *high* (e.g.\ \(Z = +1.5\)), that implies a *favorable* systematic environment. So the PiT PD (conditional on \(Z\)) will typically be *lower* than the unconditional PD \(p\).  
+- When \(Z\) is *low* (e.g.\ \(-2.0\)), that implies a *stress* environment, raising the PiT PD above \(p\).  
+
+Both functions above show the typical one‐factor Vasicek relationship between the conditional PD and a realized systematic factor \(Z\).
