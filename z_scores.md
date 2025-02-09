@@ -280,6 +280,9 @@ else:
 
 All three methods are *portfolio‐level* in that they use *only* the historical default‐rate time‐series, without needing transition‐matrix details of how loans migrate across states.  They differ primarily in how the correlation \(\rho\) (and threshold \(k\), or unconditional PD \(p\)) gets inferred from those observed default rates.
 
+========================================================
+========================================================
+========================================================
 
 Below is a more “realistic” end‐to‐end illustration in Python. We will:
 
