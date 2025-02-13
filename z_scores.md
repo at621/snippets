@@ -853,3 +853,92 @@ if not np.isnan(rho_hat_mom):
 else:
     print("Could not find a suitable rho in [0,0.9999].")
 
+---------------
+
+import numpy as np
+from scipy.optimize import minimize
+from scipy.stats import norm
+from scipy.special import loggamma, roots_hermite
+
+def vasicek_binomial_logpmf(d, N, p, rho, num_points=20):
+    """
+    Log of the probability mass function (pmf) for the number of defaults 'd'
+    out of N, under the Vasicek single-factor model.
+
+    Uses Gauss-Hermite quadrature for numerical integration.
+    """
+    log_binom_coeff = loggamma(N + 1) - loggamma(d + 1) - loggamma(N - d + 1)
+    k_ = norm.ppf(p)
+
+    # Gauss-Hermite quadrature (PROBABILIST'S version)
+    z_grid, weights = roots_hermite(num_points)
+    z_grid = z_grid * np.sqrt(2)  # Correct scaling for standard normal
+    weights = weights / np.sqrt(np.pi) # Correct scaling for standard normal
+
+    log_likelihoods = []
+    for i in range(num_points):
+        z = z_grid[i]
+        w = weights[i]
+
+        alpha_z = (k_ - np.sqrt(rho) * z) / np.sqrt(1 - rho)
+        p_cond = norm.cdf(alpha_z)
+
+        # Handle edge cases where p_cond is exactly 0 or 1
+        if p_cond <= 0:
+            lp = -np.inf  # Log of 0 is -inf
+        elif p_cond >= 1:
+            lp = -np.inf if d != N else 0.0  # Log of 0 (if d!=N) or log(1)
+        else:
+            lp = d * np.log(p_cond) + (N - d) * np.log(1 - p_cond)
+
+        # log(pdf_z) is implicitly 0, because the weights 'w' already account for the PDF
+        # of the *standard* normal distribution after the scaling above.
+
+        log_likelihoods.append(log_binom_coeff + lp + np.log(w))
+
+    # Log-sum-exp trick for numerical stability:
+    max_log_likelihood = np.max(log_likelihoods)
+    sum_exp = np.sum(np.exp(log_likelihoods - max_log_likelihood))
+    return max_log_likelihood + np.log(sum_exp)
+
+
+
+def vasicek_binomial_nll(params, defaults_per_year, N):
+    p, rho = params
+    if p <= 0 or p >= 1 or rho <= 0 or rho >= 1:
+        return np.inf  # Use np.inf for invalid parameters
+
+    total_loglike = 0.0
+    for d in defaults_per_year:
+        lp = vasicek_binomial_logpmf(d, N, p, rho)
+        total_loglike += lp
+    return -total_loglike
+
+
+# Example usage (with your provided data)
+default_rates = np.array([0.0169, 0.0404, 0.0050, 0.0373, 0.0381, 0.0128, 0.0008, 0.0082, 0.0157, 0.0299])
+N = 1000  # Example: Assume 1000 obligors each year
+defaults_per_year = (default_rates * N).astype(int)
+
+# Run the minimization with multiple starting points for robustness
+best_p = None
+best_rho = None
+best_nll = np.inf
+
+for start_p in [0.01, 0.02, 0.03, 0.04]:  # Try a few different starting points
+    for start_rho in [0.1, 0.2, 0.3, 0.05]:
+        res = minimize(vasicek_binomial_nll, x0=[start_p, start_rho],
+                       args=(defaults_per_year, N),
+                       bounds=[(1e-5, 0.9999), (1e-5, 0.9999)],
+                       method='L-BFGS-B')
+
+        if res.success and res.fun < best_nll:
+            best_nll = res.fun
+            best_p, best_rho = res.x
+
+print("\n--- Direct Moment (Vasicek Binomial MLE) Approach ---")
+if best_p is not None:
+    print(f"Estimated PD p:            {best_p:.5f}")
+    print(f"Estimated correlation rho: {best_rho:.5f}")
+else:
+    print("Optimization failed for all starting points.")
