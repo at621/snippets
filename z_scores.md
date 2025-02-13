@@ -766,3 +766,90 @@ print(f"PD for Z={z_example:.2f}, rho={rho_example:.2f}, p={p_example:.2%}: {pd_
 - When \(Z\) is *low* (e.g.\ \(-2.0\)), that implies a *stress* environment, raising the PiT PD above \(p\).  
 
 Both functions above show the typical one‐factor Vasicek relationship between the conditional PD and a realized systematic factor \(Z\).
+
+
+-------------------
+
+import numpy as np
+from scipy.stats import norm
+from scipy.optimize import bisect
+
+# -------------------------------------------------
+# 1) Sample data: 10 years of annual default rates
+# -------------------------------------------------
+default_rates = np.array([
+    0.0169, 0.0404, 0.0050, 0.0373, 0.0381,
+    0.0128, 0.0008, 0.0082, 0.0157, 0.0299
+])
+
+# Sample average and variance
+p_hat_mom = default_rates.mean()                   # forced unconditional PD
+var_hat_data = default_rates.var(ddof=1)           # sample variance (unbiased)
+
+print("Sample average default rate (forced PD) =", p_hat_mom)
+print("Sample variance of DRs =", var_hat_data)
+
+# -------------------------------------------------
+# 2) Compute theoretical second moment E[DR^2](rho)
+#    under infinite Vasicek, then Var(DR) = E[DR^2] - p^2
+# -------------------------------------------------
+def vasicek_second_moment(p, rho, z_min=-5.0, z_max=5.0, num_pts=200):
+    """
+    Numerically approximate E[DR^2], where
+      DR = Phi( (k - sqrt(rho)*Z)/sqrt(1-rho) ), Z ~ N(0,1).
+    Then E[DR^2] = Integral[Phi^2(...)*phi(z) dz].
+    """
+    k = norm.ppf(p)
+    
+    z_grid = np.linspace(z_min, z_max, num_pts)
+    dz = z_grid[1] - z_grid[0]
+    
+    # standard normal pdf
+    pdf_z = norm.pdf(z_grid)
+
+    # Inside the cdf
+    alpha_z = (k - np.sqrt(rho)*z_grid)/np.sqrt(1-rho)
+    cdf_vals = norm.cdf(alpha_z)
+    
+    # cdf_vals^2
+    integrand = cdf_vals**2 * pdf_z
+    
+    return np.sum(integrand)*dz  # approximate integral
+
+def vasicek_variance(p, rho):
+    """
+    Var(DR) = E[DR^2] - p^2
+    """
+    e2 = vasicek_second_moment(p, rho)
+    return e2 - p**2
+
+
+# -------------------------------------------------
+# 3) Solve for rho in [0, 0.9999] to match sample var
+# -------------------------------------------------
+def objective_rho(rho):
+    return vasicek_variance(p_hat_mom, rho) - var_hat_data
+
+# We do a simple bracketed 1D root-finding
+rho_lo, rho_hi = 1e-10, 0.9999
+
+# Check if the bracket covers the root
+test_lo = objective_rho(rho_lo)
+test_hi = objective_rho(rho_hi)
+
+if test_lo * test_hi > 0:
+    print("No sign change in the variance equation. Cannot solve for rho in [0,0.9999].")
+    rho_hat_mom = np.nan
+else:
+    rho_hat_mom = bisect(objective_rho, rho_lo, rho_hi)
+
+print("\n--- Method of Moments Approach ---")
+print(f"Forced PD = {p_hat_mom:.4%} (matches sample average).")
+if not np.isnan(rho_hat_mom):
+    var_model = vasicek_variance(p_hat_mom, rho_hat_mom)
+    print(f"Estimated correlation rho = {rho_hat_mom:.4%}")
+    print(f"Theoretical var(DR) under Vasicek = {var_model:.6%}")
+    print(f"Sample var(DR) = {var_hat_data:.6%}")
+else:
+    print("Could not find a suitable rho in [0,0.9999].")
+
