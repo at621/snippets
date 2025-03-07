@@ -78,23 +78,7 @@ This section must carefully define how and when expert judgment is used in the m
 - Emphasize Transparency and Consistency: Stress the importance of applying expert judgment in a transparent, consistent, and well-documented manner. Explain how the bank ensures that expert judgment is not applied arbitrarily or inconsistently.
 - Provide Justification: Explain how the balance between expert judgement and statistical precision is obtained.
 
-# Reference Dataset
-
-## Data Sources and Data Collection
-
-This section should provide a comprehensive inventory of all data sources used and a detailed description of the data collection process. The model developer should:
-
-- List All Internal Data Sources: Provide a complete list of all internal systems and databases used to obtain data, with a brief description of the type of data obtained from each. Be specific (e.g., "Loan Origination System (LOS) - provides loan-level data including loan amount, interest rate, LTV, origination date, borrower demographics...", "Credit Bureau Data Feed (Experian) - provides borrower credit scores, credit history, and public record information..."). Do not just list system names; describe the relevant data.
-- List All External Data Sources: Provide a complete list of all external data sources used, including the name of the data provider and a description of the type of data obtained. Be specific (e.g., "Macroeconomic Data Feed (National Statistical Office) - provides monthly data on national unemployment rates, GDP growth, and inflation...", "Property Price Index (XYZ Real Estate Data) - provides quarterly data on property price changes at the regional level...").
-- Describe the Data Collection Process (ETL): Provide a detailed, step-by-step description of the process for extracting, transforming, and loading (ETL) data from the various sources into a unified dataset. This should include:
-  - Data Extraction Frequency: How often is data extracted from each source?
-  - Data Validation Checks: What checks are performed during the extraction process to ensure data quality (e.g., range checks, consistency checks)?
-  - Data Transformation Steps: Describe any transformations applied to the data (e.g., data type conversions, creating derived variables, handling of missing values at this stage). Be specific about the transformations.
-  - Data Loading Procedures: Explain how the data is loaded into the development environment.
-- Data Governance and Security: Briefly describe the data governance framework in place to ensure data quality, security, and compliance with data privacy regulations.
-- Third-party data: Explain how you will ensure the quality and appropriateness of third-party data.
-
-## Segmentation and Representativeness Analysis
+## Segmentation and Representativeness Considerations
 
 This section should explain the rationale for segmentation and the steps taken to ensure data representativeness. The model developer should:
 
@@ -110,6 +94,22 @@ This section should explain the rationale for segmentation and the steps taken t
   - Shifts in Lending Standards: Explain how changes in the bank's lending policies will be addressed.
 - Dynamic Segmentation: Discuss if and how the approach will account for the evolution of the segments in the future.
 - Document thoroughly all analysis and justifications.
+
+# Reference Dataset
+
+## Data Sources and Data Collection
+
+This section should provide a comprehensive inventory of all data sources used and a detailed description of the data collection process. The model developer should:
+
+- List All Internal Data Sources: Provide a complete list of all internal systems and databases used to obtain data, with a brief description of the type of data obtained from each. Be specific (e.g., "Loan Origination System (LOS) - provides loan-level data including loan amount, interest rate, LTV, origination date, borrower demographics...", "Credit Bureau Data Feed (Experian) - provides borrower credit scores, credit history, and public record information..."). Do not just list system names; describe the relevant data.
+- List All External Data Sources: Provide a complete list of all external data sources used, including the name of the data provider and a description of the type of data obtained. Be specific (e.g., "Macroeconomic Data Feed (National Statistical Office) - provides monthly data on national unemployment rates, GDP growth, and inflation...", "Property Price Index (XYZ Real Estate Data) - provides quarterly data on property price changes at the regional level...").
+- Describe the Data Collection Process (ETL): Provide a detailed, step-by-step description of the process for extracting, transforming, and loading (ETL) data from the various sources into a unified dataset. This should include:
+  - Data Extraction Frequency: How often is data extracted from each source?
+  - Data Validation Checks: What checks are performed during the extraction process to ensure data quality (e.g., range checks, consistency checks)?
+  - Data Transformation Steps: Describe any transformations applied to the data (e.g., data type conversions, creating derived variables, handling of missing values at this stage). Be specific about the transformations.
+  - Data Loading Procedures: Explain how the data is loaded into the development environment.
+- Data Governance and Security: Briefly describe the data governance framework in place to ensure data quality, security, and compliance with data privacy regulations.
+- Third-party data: Explain how you will ensure the quality and appropriateness of third-party data.
 
 ## Analysis of Data Quality and Data Cleansing
 
@@ -139,7 +139,24 @@ This section describes the final, cleaned dataset that will be used for model de
 - Alignment with model scope: Confirm that the dataset contains all data required to meet the model's objective.
 - Consistency: Ensure that data definitions are consistent, and defaults are correctly combined with risk drivers.
 
-# Single Factor Analysis
+# Univariate and Bivariate Analysis
+
+## Segmentation and Representativeness Analysis
+
+This section should detail the validation of the segmentation and representativeness of the data within each segment. The model developer should:
+
+- Reiterate Homogeneity Requirement: Briefly restate the importance of verifying that each segment is homogeneous in terms of risk profiles.
+- Specify Statistical Tests: List the specific statistical tests used to assess homogeneity and representativeness within and between segments. Explain why each test is chosen and how its results will be interpreted. Examples include:
+  - Kolmogorov-Smirnov Test: For comparing distributions of continuous variables.
+  - Chi-squared Test: For comparing distributions of categorical variables.
+  - T-tests or ANOVA: For comparing means of continuous variables.
+- Describe Distribution Comparisons: Explain how the distributions of key risk drivers are compared within and between segments, covering:
+  - Central Tendency: How are measures like mean and median compared?
+  - Dispersion: How are measures like standard deviation and variance compared?
+  - Shape: How are aspects like skewness and kurtosis considered?
+- Confirm Default Definition Alignment: Re-confirm that the definition of default is consistent across all segments and aligns with the bank's policies and regulatory requirements.
+- Assess Lending Standards Stability: Describe the analysis performed to assess whether lending standards have remained stable over time within each segment. Explain how changes in lending standards would be identified and addressed.
+- Provide Thorough Documentation: Document all statistical test results, qualitative assessments, and conclusions regarding segmentation and representativeness. This documentation should be clear, concise, and readily understandable by validators and auditors.
 
 ## Differentiation Dataset Creation
 
@@ -220,7 +237,7 @@ This section should present the final set of risk drivers selected for the model
 - Describe Variable Transformations: Describe any transformations applied to the variables on the Short List (e.g., logarithmic transformations, standardization, binning). Explain the rationale for each transformation.
 - Indicate Expected Signs: For each risk driver, indicate the expected direction of the relationship with the probability of default (e.g., "Higher LTV is expected to be associated with a higher PD," "Higher credit score is expected to be associated with a lower PD").
 
-# Multivariate Analysis
+# Risk Differentiation Model Development
 
 ## Review of Methodology
 
@@ -307,36 +324,14 @@ This section outlines the initial testing performed on the final, differentiated
 
 # Model Calibration
 
-## Pooling
+## Segmentation and Representativeness Analysis
 
-This section explains how exposures are grouped for calibration. The model developer should:
+This section details the checks to ensure the calibration data is appropriate for each segment. The model developer should:
 
-- Explain the Rationale for Pooling: Clearly explain why pooling is used (or not used). Pooling is typically used to improve the stability of PD estimates, especially for segments with limited historical default data.
-- Describe Pooling Criteria: If pooling is used, describe the specific criteria used to group exposures into pools. This might be based on:
-  - Risk Grades: Grouping exposures assigned to the same risk grade.
-  - Risk Drivers: Grouping exposures with similar values for key risk drivers (e.g., LTV, credit score).
-  - Model Scores: Grouping exposures with similar model-predicted scores (or score ranges).
-- Justify Homogeneity: Explain how the pooling criteria ensure that exposures within each pool are reasonably homogeneous in terms of risk.
-- Explain PD Derivation: Explain precisely how the final PD is derived for each pool. This typically involves calculating a weighted average of the observed default rates for the exposures within the pool.
-- Key drivers: List the key drivers considered.
-
-## Merging Application and Portfolio Scores
-
-This section should explain how the scores from the Application model and Portfolio model are merged for calibration purposes. The model developer should:
-
-- Explain the Dual Model Approach: Clearly describe why separate models are used for new applications and existing customers. Detail the differences in available information, risk drivers, and predictive power between the two models.
-- Document Score Comparability Analysis: Explain the analysis performed to ensure scores from both models are comparable before merging. This might include:
-  - Distributional Analysis: Comparing the distributions of scores across both models to identify any systematic differences.
-  - Correlation Analysis: Assessing how well scores from both models correlate for customers who have both application and portfolio scores.
-  - Default Rate Analysis: Comparing how well similar scores from each model predict similar default rates.
-- Detail the Merging Methodology: Describe the specific methodology used to combine the two scoring systems, such as:
-  - Score Transformation: If scores are transformed to a common scale, explain the transformation method and rationale.
-  - Weighted Average: If a weighted average of scores is used, explain how weights are determined.
-  - Score Mapping: If scores from one model are mapped to another, explain the mapping procedure.
-- Explain Score Migration Handling: Describe how customers migrating from application to portfolio scoring are handled, including any transition period or blending of scores.
-- Address Point-in-Time vs Through-the-Cycle Considerations: If the application and portfolio models have different rating philosophies (PIT vs TTC), explain how these differences are reconciled in the merged scoring approach.
-- Document Validation of Merged Approach: Summarize the validation performed to ensure the merged scoring system maintains predictive power and is calibrated appropriately.
-- Outline Governance and Controls: Describe the governance framework for maintaining and updating the merged scoring system over time.
+- Confirm Calibration Pool Alignment: Verify, for each calibration segment or pool, that the data used for calibration is aligned with the segmentation assumptions made during model development. Explain how this alignment is confirmed.
+- Assess Distribution Shifts: Check for any significant shifts in the distribution of key risk drivers or other relevant factors between the development sample and the calibration sample within each segment. Explain the statistical tests used (e.g., KS test, Chi-squared test) and how the results are interpreted. Significant shifts could indicate that the calibration data is not representative and could bias the PD estimates.
+- Re-emphasize Data Quality: Briefly reiterate the importance of data quality in the calibration dataset.
+- Document All Findings: Thoroughly document the results of all representativeness checks, including statistical test results, qualitative assessments, and conclusions.
 
 ## Calibration Dataset Creation
 
@@ -376,6 +371,19 @@ This section details the calculation of the long-run average (LRA) default rates
   - Expected future economic conditions (if moving towards a PIT approach).
 - Document All Steps: Provide comprehensive documentation of all steps in the calculation of the LRA default rate, including the data used, the aggregation method, the weighting scheme (if applicable), and any adjustments made. This documentation should be clear, concise, and auditable.
 - Representativeness: Explain how the observation period is representative of the long run.
+
+## Pooling
+
+This section explains how exposures are grouped for calibration. The model developer should:
+
+- Explain the Rationale for Pooling: Clearly explain why pooling is used (or not used). Pooling is typically used to improve the stability of PD estimates, especially for segments with limited historical default data.
+- Describe Pooling Criteria: If pooling is used, describe the specific criteria used to group exposures into pools. This might be based on:
+  - Risk Grades: Grouping exposures assigned to the same risk grade.
+  - Risk Drivers: Grouping exposures with similar values for key risk drivers (e.g., LTV, credit score).
+  - Model Scores: Grouping exposures with similar model-predicted scores (or score ranges).
+- Justify Homogeneity: Explain how the pooling criteria ensure that exposures within each pool are reasonably homogeneous in terms of risk.
+- Explain PD Derivation: Explain precisely how the final PD is derived for each pool. This typically involves calculating a weighted average of the observed default rates for the exposures within the pool.
+- Key drivers: List the key drivers considered.
 
 ## Model Testing
 
@@ -506,6 +514,6 @@ output = pypandoc.convert_text(
     markdown_text,        # The string above
     'docx',               # Output format
     format='md',          # Input format is Markdown
-    outputfile='output16.docx',
+    outputfile='model_template.docx',
     extra_args=['--reference-doc=template_fix.docx']
 )
