@@ -1,4 +1,4 @@
-**Project:** Macroeconomic Data Preparation Agent (Streamlit Application)
+**Project:** Single Factor Analysis Agent (Streamlit Application)
 
 **Goal:** Implement a specialized agent as a **modular** Streamlit web application. This agent focuses on macroeconomic data ingestion, preparation, and initial analysis through a conversational interface using a CSV file provided via URL. The application state and conversation flow will be managed directly using **Streamlit session state (`st.session_state`) and the agent's logic**, without a separate orchestrator component. The implementation **must be structured across a maximum of 5 Python files**.
 
