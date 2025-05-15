@@ -19,10 +19,18 @@ ABN AMRO,Loans and advances,Households,Performing,Stage 1,Gross carrying amount,
 ABN AMRO,Loans and advances,Households,Performing,Stage 2,Gross carrying amount,16891
 ABN AMRO,Loans and advances,Households,Non-performing,Stage 2,Gross carrying amount,109
 ABN AMRO,Loans and advances,Households,Non-performing,Stage 3,Gross carrying amount,2273
+ABN AMRO,Loans and advances,Households,Performing,Stage 1,Accumulated impairment,-56
+ABN AMRO,Loans and advances,Households,Performing,Stage 2,Accumulated impairment,-73
+ABN AMRO,Loans and advances,Households,Non-performing,Stage 2,Accumulated impairment,-1
+ABN AMRO,Loans and advances,Households,Non-performing,Stage 3,Accumulated impairment,-199
 ABN AMRO,Off-balance sheet exposures,Households,Performing,Stage 1,Gross carrying amount,6891
 ABN AMRO,Off-balance sheet exposures,Households,Performing,Stage 2,Gross carrying amount,269
 ABN AMRO,Off-balance sheet exposures,Households,Non-performing,Stage 2,Gross carrying amount,
 ABN AMRO,Off-balance sheet exposures,Households,Non-performing,Stage 3,Gross carrying amount,11
+ABN AMRO,Off-balance sheet exposures,Households,Performing,Stage 1,Accumulated impairment,1
+ABN AMRO,Off-balance sheet exposures,Households,Performing,Stage 2,Accumulated impairment,2
+ABN AMRO,Off-balance sheet exposures,Households,Non-performing,Stage 2,Accumulated impairment,
+ABN AMRO,Off-balance sheet exposures,Households,Non-performing,Stage 3,Accumulated impairment,
 Rabobank,Loans and advances,Households,Performing,Stage 1,Gross carrying amount,162610
 Rabobank,Loans and advances,Households,Performing,Stage 2,Gross carrying amount,40293
 Rabobank,Loans and advances,Households,Non-performing,Stage 2,Gross carrying amount,0
