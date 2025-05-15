@@ -1,0 +1,41 @@
+Source,Asset_Type,Segment,Exposure_Type,Stage,Metric,Value
+ING,Loans and advances,Households,Performing,Stage 1,Gross carrying amount,347046
+ING,Loans and advances,Households,Performing,Stage 2,Gross carrying amount,33491
+ING,Loans and advances,Households,Non-performing,Stage 2,Gross carrying amount,0
+ING,Loans and advances,Households,Non-performing,Stage 3,Gross carrying amount,4872
+ING,Loans and advances,Households,Performing,Stage 1,Accumulated impairment,-171
+ING,Loans and advances,Households,Performing,Stage 2,Accumulated impairment,-566
+ING,Loans and advances,Households,Non-performing,Stage 2,Accumulated impairment,0
+ING,Loans and advances,Households,Non-performing,Stage 3,Accumulated impairment,-1261
+ING,Off-balance sheet exposures,Households,Performing,Stage 1,Gross carrying amount,31444
+ING,Off-balance sheet exposures,Households,Performing,Stage 2,Gross carrying amount,1553
+ING,Off-balance sheet exposures,Households,Non-performing,Stage 2,Gross carrying amount,0
+ING,Off-balance sheet exposures,Households,Non-performing,Stage 3,Gross carrying amount,38
+ING,Off-balance sheet exposures,Households,Performing,Stage 1,Accumulated impairment,0
+ING,Off-balance sheet exposures,Households,Performing,Stage 2,Accumulated impairment,-2
+ING,Off-balance sheet exposures,Households,Non-performing,Stage 2,Accumulated impairment,0
+ING,Off-balance sheet exposures,Households,Non-performing,Stage 3,Accumulated impairment,-1
+ABN AMRO,Loans and advances,Households,Performing,Stage 1,Gross carrying amount,148084
+ABN AMRO,Loans and advances,Households,Performing,Stage 2,Gross carrying amount,16891
+ABN AMRO,Loans and advances,Households,Non-performing,Stage 2,Gross carrying amount,109
+ABN AMRO,Loans and advances,Households,Non-performing,Stage 3,Gross carrying amount,2273
+ABN AMRO,Off-balance sheet exposures,Households,Performing,Stage 1,Gross carrying amount,6891
+ABN AMRO,Off-balance sheet exposures,Households,Performing,Stage 2,Gross carrying amount,269
+ABN AMRO,Off-balance sheet exposures,Households,Non-performing,Stage 2,Gross carrying amount,
+ABN AMRO,Off-balance sheet exposures,Households,Non-performing,Stage 3,Gross carrying amount,11
+Rabobank,Loans and advances,Households,Performing,Stage 1,Gross carrying amount,162610
+Rabobank,Loans and advances,Households,Performing,Stage 2,Gross carrying amount,40293
+Rabobank,Loans and advances,Households,Non-performing,Stage 2,Gross carrying amount,0
+Rabobank,Loans and advances,Households,Non-performing,Stage 3,Gross carrying amount,1820
+Rabobank,Loans and advances,Households,Performing,Stage 1,Accumulated impairment,-18
+Rabobank,Loans and advances,Households,Performing,Stage 2,Accumulated impairment,-69
+Rabobank,Loans and advances,Households,Non-performing,Stage 2,Accumulated impairment,0
+Rabobank,Loans and advances,Households,Non-performing,Stage 3,Accumulated impairment,-101
+Rabobank,Off-balance sheet exposures,Households,Performing,Stage 1,Gross carrying amount,9130
+Rabobank,Off-balance sheet exposures,Households,Performing,Stage 2,Gross carrying amount,852
+Rabobank,Off-balance sheet exposures,Households,Non-performing,Stage 2,Gross carrying amount,0
+Rabobank,Off-balance sheet exposures,Households,Non-performing,Stage 3,Gross carrying amount,44
+Rabobank,Off-balance sheet exposures,Households,Performing,Stage 1,Accumulated impairment,1
+Rabobank,Off-balance sheet exposures,Households,Performing,Stage 2,Accumulated impairment,1
+Rabobank,Off-balance sheet exposures,Households,Non-performing,Stage 2,Accumulated impairment,0
+Rabobank,Off-balance sheet exposures,Households,Non-performing,Stage 3,Accumulated impairment,0
