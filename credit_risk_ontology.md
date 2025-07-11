@@ -1,4 +1,4 @@
-# Credit Risk Ontology Design Document
+# Ideation: Credit Risk Ontology Design Document
 
 ## Overview
 This document outlines the design for a comprehensive Credit Risk Ontology based on EU Capital Requirements Regulation (CRR) 575/2013, following FIBO patterns and conventions.
