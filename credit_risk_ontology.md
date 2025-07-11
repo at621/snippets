@@ -2,6 +2,7 @@
 
 ## Overview
 This document outlines the design for a comprehensive Credit Risk Ontology based on EU Capital Requirements Regulation (CRR) 575/2013, following FIBO patterns and conventions.
+The examples are illustrative and the list of objects is not comprehensive. 
 
 ## Key Design Principles
 - **Alignment with FIBO**: Extends and reuses FIBO classes and properties where applicable
