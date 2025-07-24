@@ -1,4 +1,4 @@
-Please convert this PDF to a clean, well-structured Markdown document following these specific guidelines:
+Please convert this PDF to a clean, well-structured Markdown document as an artifact following these specific guidelines:
 
 **Text Conversion:**
 - Preserve the logical hierarchy using Markdown headings (#, ##, ###, etc.)
@@ -32,4 +32,4 @@ Please convert this PDF to a clean, well-structured Markdown document following 
 - Indent nested lists consistently
 - Provide a single Markdown document ready to save as a .md file
 
-Please begin the conversion now.
+Please begin the conversion into markdown now. Create an artifact which can be saved and reused.
