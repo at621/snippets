@@ -1,8 +1,8 @@
-# EBA Transparency Exercise 2025 Database Documentation
+# EBA Stresstest 2025 Database Documentation
 
 ## Overview
 
-This database contains data from the European Banking Authority (EBA) Transparency Exercise 2025, providing detailed information on European banks' financial positions, credit risk exposures, and stress test results. The data supports regulatory oversight, market transparency, and financial stability analysis.
+This database contains data from the European Banking Authority (EBA) Stresstest Exercise 2025, providing detailed information on European banks' financial positions, credit risk exposures, and stress test results. The data supports regulatory oversight, market transparency, and financial stability analysis.
 
 **Data Period**: December 2024 (with historical comparisons)  
 **Scope**: Major European banks under ECB supervision  
