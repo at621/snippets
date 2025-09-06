@@ -8,10 +8,12 @@ import base64
 import json
 import sys
 import os
+import time
 
 # CONFIGURATION
 API_KEY = os.environ.get("CLAUDE_KEY")  # Get API key from environment variable
-PDF_FILE = "regulation.pdf"    # Replace with your PDF file path
+PDF_FILE = "Guidelines on PD and LGD estimation (EBA-GL-2017-16)_EN.pdf"    # Replace with your PDF file path
+OUTPUT_FILE = "extracted_requirements.json"  # Output JSON file name
 
 # Check if API key is set
 if not API_KEY:
@@ -205,7 +207,10 @@ except Exception as e:
 try:
     print(f"Reading PDF: {PDF_FILE}")
     with open(PDF_FILE, 'rb') as f:
-        pdf_data = base64.b64encode(f.read()).decode('utf-8')
+        pdf_bytes = f.read()
+        pdf_size_mb = len(pdf_bytes) / (1024 * 1024)
+        print(f"PDF size: {pdf_size_mb:.2f} MB")
+        pdf_data = base64.b64encode(pdf_bytes).decode('utf-8')
 except FileNotFoundError:
     print(f"Error: PDF file '{PDF_FILE}' not found")
     sys.exit(1)
@@ -215,9 +220,11 @@ except Exception as e:
 
 # Send to Claude API
 print("Sending to Claude API for structured extraction...")
+start_time = time.time()
+
 try:
     response = client.messages.create(
-        model="claude-sonnet-4",
+        model="claude-sonnet-4-20250514",
         max_tokens=8192,  # Increased for JSON output
         temperature=0,     # Deterministic for structured extraction
         messages=[
@@ -241,6 +248,15 @@ try:
         ]
     )
     
+    # Calculate processing time
+    end_time = time.time()
+    processing_time = end_time - start_time
+    
+    # Get token usage
+    input_tokens = response.usage.input_tokens
+    output_tokens = response.usage.output_tokens
+    total_tokens = input_tokens + output_tokens
+    
     # Get response text
     response_text = response.content[0].text
     
@@ -254,6 +270,11 @@ try:
         
         print(f"\n✓ Extraction complete! Saved to: {OUTPUT_FILE}")
         print(f"✓ Extracted {len(json_data['requirements'])} requirements")
+        print(f"✓ Processing time: {processing_time:.2f} seconds")
+        print(f"\n📊 Token Usage:")
+        print(f"   • Input tokens: {input_tokens:,}")
+        print(f"   • Output tokens: {output_tokens:,}")
+        print(f"   • Total tokens: {total_tokens:,}")
         
     except json.JSONDecodeError as e:
         print(f"\nWarning: Response is not valid JSON. Saving raw response...")
@@ -262,6 +283,11 @@ try:
             f.write(response_text)
         print(f"Raw response saved to: {error_output_file}")
         print(f"JSON Error: {e}")
+        print(f"Processing time: {processing_time:.2f} seconds")
+        print(f"\n📊 Token Usage:")
+        print(f"   • Input tokens: {input_tokens:,}")
+        print(f"   • Output tokens: {output_tokens:,}")
+        print(f"   • Total tokens: {total_tokens:,}")
         
 except Exception as e:
     print(f"Error calling API: {e}")
