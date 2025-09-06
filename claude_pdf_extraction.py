@@ -217,7 +217,7 @@ except Exception as e:
 print("Sending to Claude API for structured extraction...")
 try:
     response = client.messages.create(
-        model="claude-opus-4-1-20250805",
+        model="claude-sonnet-4",
         max_tokens=8192,  # Increased for JSON output
         temperature=0,     # Deterministic for structured extraction
         messages=[
