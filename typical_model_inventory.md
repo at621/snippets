@@ -199,7 +199,6 @@ Representative enterprise-wide model inventory in line with SR 11-7, OSFI E-23 a
 
 **Summary**
 
-- **Total models: 188** (requirement ≥150 met)
 - **Risk & regulatory (Areas 1–11): 119** — Credit Risk–Regulatory Capital 21 (full PD/LGD/EAD suites per portfolio: mortgages, cards, personal loans/overdrafts, SME, large corporate, banks/sovereigns), Credit Decisioning & Monitoring 13, IFRS 9/Provisioning 11, Market Risk 10, Counterparty Credit Risk & xVA 8, Pricing & Valuation (Trading Book) 13, ALM/IRRBB/Liquidity 12, Capital & Stress Testing 8, Financial Crime & Compliance 12, Operational & Non-Financial Risk 5, Climate & ESG Risk 6
 - **Non-risk / business (Areas 12–21): 69** (requirement ≥55 met) — Finance, Controlling & Accounting 9, Commercial Pricing 6, Marketing & Customer Analytics 10, Sales & Distribution 5, Operations & Processes 10, HR & Workforce 4, IT & Technology 4, Wealth/AM & Bancassurance 9, Customer Service & Digital Channels 7, Economics/Research & Other AI/ML 5
 - **Tier distribution: Tier 1 — 64 models (34%), Tier 2 — 79 models (42%), Tier 3 — 45 models (24%).** Tier 1 is concentrated in regulatory capital, financial reporting, liquidity and critical compliance models; Tier 3 in marketing, sales, operations, HR and IT.
